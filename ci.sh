@@ -23,7 +23,7 @@ echo "password $GIT_TOKEN" >> ~/.netrc
 git add doc -A
 git config user.name "Travis.CI"
 git config user.email "travis.auto.commit@localdomain"
-git commit -m $commit_msg
+git commit -m "$commit_msg"
 git push -u origin master
 
 # retry
