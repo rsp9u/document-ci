@@ -6,31 +6,10 @@ matrix:
       before_script:
         - yarn global add redoc-cli
       script:
-        - mkdir -p doc/apis
-        - for f in $(find src/apis -name "*.yaml"); do redoc-cli bundle $f -o doc/apis/$(basename $f .yaml).html; done
-        - echo "machine github.com"   > ~/.netrc
-        - echo "login $GIT_USER"     >> ~/.netrc
-        - echo "password $GIT_TOKEN" >> ~/.netrc
-        - git add doc/apis -A
-        - git config user.name "Travis.CI"
-        - git config user.email "travis.auto.commit@localdomain"
-        - git commit -m "Update API documents [skip ci]"
-        - git push -u origin master
-        - git remote -v
+        - ./ci.sh apis
 
     - language: python
       python:
         - 3.7
       script:
-        - mkdir -p doc/umls
-        - for f in $(find src/umls -name "*.puml"); do echo "${f}:"; echo "$(cat $f | python pte.py)"; echo ""; done
-        - for f in $(find src/umls -name "*.puml"); do curl http://www.plantuml.com/plantuml/png/$(cat $f | python pte.py) -Lo doc/umls/$(basename $f .puml).png; done
-        - echo "machine github.com"   > ~/.netrc
-        - echo "login $GIT_USER"     >> ~/.netrc
-        - echo "password $GIT_TOKEN" >> ~/.netrc
-        - git add doc/umls -A
-        - git config user.name "Travis.CI"
-        - git config user.email "travis.auto.commit@localdomain"
-        - git commit -m "Update PlantUML documents [skip ci]"
-        - git push -u origin master
-        - git remote -v
+        - ./ci.sh puml
