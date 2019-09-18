@@ -9,7 +9,7 @@
 <body>
   <ul>
     {{#.}}
-    <li><a href=./apis/{{.}}/></li>
+    <li><a href=./apis/{{.}}>{{.}}</li>
     {{/.}}
   </ul>
 </body>
