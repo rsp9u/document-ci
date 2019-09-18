@@ -1,0 +1,21 @@
+matrix:
+  include:
+    - language: node_js
+      before_script:
+        - yarn global add redoc-cli
+      script:
+        - for f in $(find src/apis -name "*.yaml"); do redoc-cli bundle $f -o doc/apis/$(basename $f .yaml).html; done
+        - git add doc/apis -A
+        - git config user.name "Travis.CI"
+        - git config user.email "travis.auto.commit@localdomain"
+        - git commit -m "Update API documents [skip ci]"
+        - git push -u origin master
+
+    - language: python
+      script:
+        - for f in $(find src/umls -name "*.puml"); do curl http://www.plantuml.com/plantuml/png/$(cat $f | python pte.py) -Lo doc/umls/$(basename $f .puml).png; done
+        - git add doc/umls -A
+        - git config user.name "Travis.CI"
+        - git config user.email "travis.auto.commit@localdomain"
+        - git commit -m "Update PlantUML documents [skip ci]"
+        - git push -u origin master
