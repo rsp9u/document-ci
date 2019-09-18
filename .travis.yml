@@ -3,8 +3,12 @@ matrix:
     - language: node_js
       node_js:
         - 11
+      addons:
+        apt:
+          packages:
+            - jq
       before_script:
-        - yarn global add redoc-cli
+        - yarn global add redoc-cli mustache
       script:
         - ./ci.sh apis
 

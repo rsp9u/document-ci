@@ -7,6 +7,7 @@ if [ "$1" = "apis" ]; then
   for f in $(find src/apis -name "*.yaml"); do
     redoc-cli bundle $f -o docs/apis/$(basename $f .yaml).html
   done
+  echo "$(ls docs/apis | jq --raw-input --slurp -c 'split("\n")[0:-1]')" | mustache - docs/index.html.template docs/index.html
   commit_msg="Update API documents [skip ci]"
 else
   mkdir -p docs/umls
